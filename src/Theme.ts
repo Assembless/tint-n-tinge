@@ -1,11 +1,14 @@
-import { ITheme, IColor, Dictionary } from "./types";
+import { Dictionary } from "./types";
 import { Color, makePalette } from './Palette';
 
-export class Theme<P extends Dictionary<string>> implements ITheme<P> {
-    readonly palette: { [key in keyof P]: IColor };
+/**
+ * Theme manager class.
+ */
+export class Theme<P extends Dictionary<string>> {
+    readonly palette: { [key in keyof P]: Color };
 
     constructor(palette: P) {
-        this.palette = makePalette(palette) as { [key in keyof P]: IColor };
+        this.palette = makePalette(palette) as { [key in keyof P]: Color };
     }
 
     replaceColor(key: keyof P, color: string) {

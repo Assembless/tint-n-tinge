@@ -1,10 +1,9 @@
-import { IRGBColor, IColor } from "./types";
 import { hexToRgb, getAlphaFromHex, invertColor, increase_brightness, decrease_brightness, hexAlphaMap } from "./helpers";
 
 /**
  * Implements rgb color api.
  */
-export class RGBColor implements IRGBColor {
+export class RGBColor {
     public readonly r: number;
     public readonly g: number;
     public readonly b: number;
@@ -50,7 +49,7 @@ export class RGBColor implements IRGBColor {
  * THE Color.
  * Has everything you need from a color.
  */
-export class Color implements IColor {
+export class Color {
     private readonly value: string;
 
     constructor(value: string) {
@@ -165,7 +164,7 @@ export class Color implements IColor {
 export const makePalette = <R, K extends keyof R>(
     rawPalette: { [key in K]: string }
 ) => {
-    const parsedPalette = {} as { [key in K]: IColor };
+    const parsedPalette = {} as { [key in K]: Color };
     Object.keys(rawPalette).forEach(
         (key) => (parsedPalette[key as K] = new Color(rawPalette[key as K]))
     );
