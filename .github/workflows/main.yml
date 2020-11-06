@@ -33,5 +33,7 @@ jobs:
         with:
           name: dist-dir
           path: |
-            dist
+            ./**
+            !node_modules/**
+            !src/**
       
