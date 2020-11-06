@@ -10,7 +10,8 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
