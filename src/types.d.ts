@@ -1,5 +1,6 @@
-export interface ITheme {
-    readonly palette: TColorPalette;
+export interface ITheme<P> {
+    readonly palette: { [key in keyof P]: IColor };
+    replaceColor: (key: keyof P, color: string) => void;
 }
 
 export interface IColor {
@@ -21,6 +22,10 @@ export interface IRGBColor {
     opaqueness(alpha: number): string;
 }
 
-export type TColorPalette = {
+export type TThemePalette = {
     [key: string]: IColor;
 };
+
+export type Dictionary<T, K extends string = string> = {
+    [key in K]: T
+}
