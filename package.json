@@ -1,0 +1,21 @@
+{
+  "name": "tint-n-tinge",
+  "version": "1.0.0-alpha.1",
+  "description": "🎨 Lightweight theme management lib",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": "https://github.com/DRFR0ST/tint-n-tinge",
+  "author": "Mike Eling <mike.eling97@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.3",
+    "typescript": "^4.0.5"
+  }
+}
