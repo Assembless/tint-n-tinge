@@ -6,9 +6,10 @@ export interface ITheme<P> {
 export interface IColor {
     readonly hex: string;
     readonly alpha: number;
-    readonly rgb: { r: number; g: number; b: number } | null;
-    readonly invert: string;
-    opaqueness(alpha: number): string;
+    readonly rgb: IRGBColor;
+    readonly invert: IColor;
+    readonly contrast: IColor;
+    opacity(alpha: number): string;
     lighten(percentage: number): IColor;
     darken(percentage: number): IColor;
 }
@@ -19,7 +20,7 @@ export interface IRGBColor {
     readonly b: number;
     readonly alpha: number;
     toString(): string;
-    opaqueness(alpha: number): string;
+    opacity(alpha: number): string;
 }
 
 export type TThemePalette = {
