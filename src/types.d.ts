@@ -8,9 +8,9 @@ export interface IColor {
     readonly alpha: number;
     readonly rgb: { r: number; g: number; b: number } | null;
     readonly invert: string;
-    readonly light: string;
-    readonly dark: string;
     opaqueness(alpha: number): string;
+    lighten(percentage: number): IColor;
+    darken(percentage: number): IColor;
 }
 
 export interface IRGBColor {
@@ -18,7 +18,7 @@ export interface IRGBColor {
     readonly g: number;
     readonly b: number;
     readonly alpha: number;
-    readonly toString: string;
+    toString(): string;
     opaqueness(alpha: number): string;
 }
 
