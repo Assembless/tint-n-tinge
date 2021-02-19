@@ -1,62 +1,21 @@
-import { hexToRgb, getAlphaFromHex, invertColor, increase_brightness, decrease_brightness, hexAlphaMap } from "./helpers";
-
-/**
- * Implements rgb color api.
- */
-export class RGBColor {
-    public readonly r: number;
-    public readonly g: number;
-    public readonly b: number;
-    public readonly alpha: number;
-
-    constructor(r: number, g: number, b: number, a: number = 1) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.alpha = a;
-    }
-
-/**
- * Returns a string ready to be passed to CSS.
- * @returns {string} eg. "rgb(123, 43, 23)"
- */
-    public toString() {
-        const format = this.alpha < 1 ? "rgba" : "rgb";
-        const colorString = `${this.r}, ${this.g}, ${this.b}`;
-        const alphaString = this.alpha < 1 ? `, ${this.alpha}` : "";
-
-        return `${format}(${colorString}${alphaString})`;
-    }
-
-
-    /**
-     * Returns rgba value.
-     * @param alpha A number from 0 to 1.
-     * @returns {string}
-     * @example 
-     * const color = new RGBColor(12, 13, 16);
-     * 
-     * color.opacity(0.5); // "rgba(12, 13, 16, 0.5)"
-     */
-    public opacity(alpha: number) {
-        const colorString = `${this.r}, ${this.g}, ${this.b}`;
-
-        return `rgba(${colorString}, ${alpha})`;
-    }
-}
+import * as parseColor from 'color-parse';
+import { invertColor, increase_brightness, decrease_brightness, hexAlphaMap, rgbToHex } from "./helpers";
 
 /**
  * THE Color.
  * Has everything you need from a color.
  */
 export class Color {
-    private readonly value: string;
+    private readonly value: [number, number, number];
+    public readonly alpha: number;
 
     constructor(value: string) {
-        this.value = value.toLowerCase();
+        const parsedColor = parseColor(value);
+        this.value = parsedColor.values ?? [0, 0, 0];
+        this.alpha = parsedColor.alpha ?? 1;
 
-        if (!/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)|(^#[0-9A-F]{8}$)/i.test(this.value))
-            throw new Error(`Expected hex value, got ${this.value}`);
+        if (this.value === null)
+            throw new Error(`Expected a color value, got ${this.value}`);
     }
 
     /**
@@ -64,12 +23,7 @@ export class Color {
      * @returns {string} "#99CC66"
      */
     get hex() {
-        let val = this.value;
-        if (val.length === 9)
-            return val.substring(0, val.length - 2);
-        if (val.length === 4)
-            return `#${val[1].repeat(2)}${val[2].repeat(2)}${val[3].repeat(2)}`//"#" + val.replace(/#/g, "").repeat(2); // ! This is so wrong...
-        return val;
+        return rgbToHex(...this.value);
     }
 
 /**
@@ -90,57 +44,44 @@ export class Color {
     }
 
     /**
-     * Returns RGBColor object.
-     * @returns {RGBColor}
+     * Returns RGB color object.
      * @example
      * const color = new Color("#9C6");
      * color.rgb.toString(); // rgb(153, 204, 102)
      */
     get rgb() {
-        const value = hexToRgb(this.hex);
-
-        if (!value)
-            throw new Error(`There was an error while converting hex to rgb.`);
-
-        return new RGBColor(value.r, value.g, value.b);
+        return {
+            r: this.value[0],
+            g: this.value[1],
+            b: this.value[2],
+            toRGBString: () => `rgb(${this.value[0]}, ${this.value[1]}, ${this.value[2]})`,
+            toRGBAString: (opacity?: number) => `rgba(${this.value[0]}, ${this.value[1]}, ${this.value[2]}, ${opacity ?? this.alpha})`
+        }
     }
 
-/**
- * Returns alpha from provided hex. (from 0 to 1)
- * @returns {number}
- */
-    get alpha() {
-        const alpha = Math.round(getAlphaFromHex(this.value) * 100) / 100;
-
-        if (alpha !== null || alpha !== undefined)
-            return alpha;
-
-        return 1;
-    }
-
-/**
- * Increases brightness of the color.
- * @param percentage A number from 0 to 100.
- * @returns {IColor}
- * @example
- * const color = new Color("#9C6");
- *
- * color.darken(30).hex; // "#b7db94"
- */
+    /**
+     * Increases brightness of the color.
+     * @param percentage A number from 0 to 100.
+     * @returns {IColor}
+     * @example
+     * const color = new Color("#9C6");
+     *
+     * color.darken(30).hex; // "#b7db94"
+     */
     public lighten(percentage: number) {
         if (percentage === 100) return new Color("#fff");
         return new Color(increase_brightness(this.hex, percentage));
     }
 
-/**
- * Decreases brightness of the color.
- * @param percentage A number from 0 to 100.
- * @returns {IColor}
- * @example
- * const color = new Color("#9C6");
- *
- * color.darken(30).hex; // "#7abc37"
- */
+    /**
+     * Decreases brightness of the color.
+     * @param percentage A number from 0 to 100.
+     * @returns {IColor}
+     * @example
+     * const color = new Color("#9C6");
+     *
+     * color.darken(30).hex; // "#7abc37"
+     */
     public darken(percentage: number) {
         if (percentage === 100) return new Color("#000");
         return new Color(decrease_brightness(this.hex, percentage));

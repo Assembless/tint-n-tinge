@@ -15,6 +15,11 @@ export function hexToRgb(hex: string) {
         : null;
 }
 
+export function rgbToHex(r: number, g: number, b: number) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+
 export function getAlphaFromHex(hex: string): number {
     var rx = /^#[0-9a-f]{6}([0-9a-f]{2})$/i;
     var m = hex.match(rx);

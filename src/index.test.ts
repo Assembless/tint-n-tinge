@@ -1,5 +1,5 @@
 import { Theme } from './index';
-import { Color, RGBColor } from "./Palette";
+import { Color } from "./Palette";
 
 const palette = {
     background: "#FFF",
@@ -28,10 +28,10 @@ describe("Color", () => {
         expect(new Color("#9C6").hex).toBe("#99cc66");
     });
     test('should return RGBColor object.', () => {
-        expect(new Color("#99CC66").rgb instanceof RGBColor).toBe(true);
+        expect(new Color("#99CC66").rgb instanceof Object).toBe(true);
     });
     test('should return alpha.', () => {
-        expect(new Color("#99CC661A").alpha).toBe(0.10);
+        expect(new Color("#99CC661A").alpha).toBe(0.10196078431372549);
     });
     test('should return hex without alpha.', () => {
         expect(new Color("#99CC661A").hex).toBe("#99cc66");
@@ -60,19 +60,27 @@ describe("Color", () => {
 
         expect(new Color("#000").darken(50).hex).toBe("#000000");
     });
-})
+    test('should accept return rgb string.', () => {
+        const color = new Color('rgb(123, 42, 0)');
 
-describe("RGBColor", () => {
-
-    test('should return rgb string.', () => {
-        expect(new RGBColor(123, 42, 0).toString()).toBe("rgb(123, 42, 0)");
+        expect(color.rgb.toRGBString()).toBe("rgb(123, 42, 0)");
     });
     test('should return rgb object.', () => {
-        const color = new RGBColor(123, 42, 0, 0.5);
+        const color = new Color('rgba(123, 42, 0, 0.5)');
 
-        expect(color.r).toBe(123);
-        expect(color.g).toBe(42);
-        expect(color.b).toBe(0);
+        expect(color.rgb.r).toBe(123);
+        expect(color.rgb.g).toBe(42);
+        expect(color.rgb.b).toBe(0);
         expect(color.alpha).toBe(0.5);
+    });
+    test('should accept hsl and parse to rgb.', () => {
+        const color = new Color('hsla(12 10% 50% / .3)');
+
+        expect(color.rgb.toRGBAString()).toBe("rgba(12, 10, 50, 0.3)");
+
+        expect(color.rgb.r).toBe(12);
+        expect(color.rgb.g).toBe(10);
+        expect(color.rgb.b).toBe(50);
+        expect(color.alpha).toBe(0.3);
     });
 })

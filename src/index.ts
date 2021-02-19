@@ -1,2 +1,2 @@
 export { Theme } from "./Theme";
-export { Color, RGBColor } from "./Palette";
+export { Color } from "./Palette";
