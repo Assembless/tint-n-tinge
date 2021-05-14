@@ -4,8 +4,8 @@
   "description": "🎨 Lightweight theme management lib",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "repository": "https://github.com/DRFR0ST/tint-n-tinge",
-  "author": "Mike Eling <mike.eling97@gmail.com>",
+  "repository": "https://github.com/Assembless/tint-n-tinge",
+  "author": "Assembless <support@assembless.tech>",
   "license": "MIT",
   "private": false,
   "scripts": {
