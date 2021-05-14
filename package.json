@@ -1,5 +1,5 @@
 {
-  "name": "tint-n-tinge",
+  "name": "@assembless/tint-n-tinge",
   "version": "1.0.0-alpha.5",
   "description": "🎨 Lightweight theme management lib",
   "main": "./dist/index.js",
